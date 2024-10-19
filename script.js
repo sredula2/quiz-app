@@ -4,8 +4,47 @@ let score = 0;
 let attempts = 0;
 const totalAttempts = 4; // Maximum attempts for TRAT
 
+// Handle login and redirect
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const quizName = document.getElementById('quizSelect').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Validate credentials
+    validateCredentials(quizName, username, password);
+});
+
+// Validate credentials
+function validateCredentials(quizName, username, password) {
+    fetch('credentials.csv')
+        .then(response => response.text())
+        .then(data => {
+            const lines = data.split('\n').slice(1);
+            const isValid = lines.some(line => {
+                const [quiz, user, pass] = line.split(',');
+                return quiz === quizName && user === username && pass === password;
+            });
+            if (isValid) {
+                currentQuiz = quizName;
+
+                // Redirect based on the quiz name
+                if (quizName.toLowerCase().includes("trat")) {
+                    window.location.href = 'trat.html'; // Redirect to TRAT page
+                } else if (quizName.toLowerCase().includes("irat")) {
+                    window.location.href = 'irat.html'; // Redirect to IRAT page
+                } else {
+                    alert('Unknown quiz type!');
+                }
+            } else {
+                alert('Invalid credentials!');
+            }
+        });
+}
+
+
 // Load quizzes from credentials.csv
-fetch('credentials.csv')
+fetch('https://github.com/sredula2/quiz-app/credentials.csv')
     .then(response => response.text())
     .then(data => {
         console.log(data); // Add this line to see the output        
