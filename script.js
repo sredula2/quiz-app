@@ -5,7 +5,7 @@ let attempts = 0;
 const totalAttempts = 4; // Maximum attempts for TRAT
 
 // Load quizzes from credentials.csv
-fetch('https://raw.githubusercontent.com/sredula2/quiz-app/main/credentials.csv') // Use raw URL here
+fetch('https://raw.githubusercontent.com/sredula2/quiz-app/refs/heads/main/credentials.csv') // Use raw URL here
     .then(response => response.text())
     .then(data => {
         console.log(data); // Add this line to see the output        
@@ -35,7 +35,7 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
 
 // Validate credentials
 function validateCredentials(quizName, username, password) {
-    fetch('https://raw.githubusercontent.com/sredula2/quiz-app/main/credentials.csv') // Use raw URL here
+    fetch('https://raw.githubusercontent.com/sredula2/quiz-app/refs/heads/main/credentials.csv') // Use raw URL here
         .then(response => response.text())
         .then(data => {
             const lines = data.split('\n').slice(1);
