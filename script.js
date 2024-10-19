@@ -45,7 +45,7 @@ function validateCredentials(quizName, username, password) {
 
 
 // Load quizzes from credentials.csv
-fetch('https://github.com/sredula2/quiz-app/credentials.csv')
+fetch('https://sredula2.github.io/quiz-app/credentials.csv')
     .then(response => response.text())
     .then(data => {
         console.log(data); // Add this line to see the output        
