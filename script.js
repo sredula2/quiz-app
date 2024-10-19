@@ -4,48 +4,8 @@ let score = 0;
 let attempts = 0;
 const totalAttempts = 4; // Maximum attempts for TRAT
 
-// Handle login and redirect
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const quizName = document.getElementById('quizSelect').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    console.log('Selected quiz name:', quizName); // Debug line
-    // Validate credentials
-    validateCredentials(quizName, username, password);
-});
-
-// Validate credentials
-function validateCredentials(quizName, username, password) {
-    fetch('credentials.csv')
-        .then(response => response.text())
-        .then(data => {
-            const lines = data.split('\n').slice(1);
-            const isValid = lines.some(line => {
-                const [quiz, user, pass] = line.split(',');
-                return quiz === quizName && user === username && pass === password;
-            });
-            if (isValid) {
-                currentQuiz = quizName;
-
-                // Redirect based on the quiz name
-                if (quizName.toLowerCase().includes("trat")) {
-                    window.location.href = 'trat.html'; // Redirect to TRAT page
-                } else if (quizName.toLowerCase().includes("irat")) {
-                    window.location.href = 'irat.html'; // Redirect to IRAT page
-                } else {
-                    alert('Unknown quiz type!');
-                }
-            } else {
-                alert('Invalid credentials!');
-            }
-        });
-}
-
-
 // Load quizzes from credentials.csv
-fetch('https://raw.githubusercontent.com/sredula2/quiz-app/refs/heads/main/credentials.csv')
+fetch('https://raw.githubusercontent.com/sredula2/quiz-app/main/credentials.csv') // Use raw URL here
     .then(response => response.text())
     .then(data => {
         console.log(data); // Add this line to see the output        
@@ -68,12 +28,14 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
     const quizName = document.getElementById('quizSelect').value;
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
+
+    console.log('Selected quiz name:', quizName); // Debug line
     validateCredentials(quizName, username, password);
 });
 
 // Validate credentials
 function validateCredentials(quizName, username, password) {
-    fetch('credentials.csv')
+    fetch('https://raw.githubusercontent.com/sredula2/quiz-app/main/credentials.csv') // Use raw URL here
         .then(response => response.text())
         .then(data => {
             const lines = data.split('\n').slice(1);
@@ -83,7 +45,15 @@ function validateCredentials(quizName, username, password) {
             });
             if (isValid) {
                 currentQuiz = quizName;
-                window.location.href = 'irat.html'; // Redirect to IRAT page
+
+                // Redirect based on the quiz name
+                if (quizName.toLowerCase().includes("trat")) {
+                    window.location.href = 'trat.html'; // Redirect to TRAT page
+                } else if (quizName.toLowerCase().includes("irat")) {
+                    window.location.href = 'irat.html'; // Redirect to IRAT page
+                } else {
+                    alert('Unknown quiz type!');
+                }
             } else {
                 alert('Invalid credentials!');
             }
@@ -128,7 +98,7 @@ function displayQuestion(question) {
     const container = document.getElementById('questionContainer');
     container.innerHTML = `
         <h2>${question.question}</h2>
-        ${question.choices.map((choice, index) => `<button onclick="checkIratAnswer('${question.answer}', '${choice}')">${choice}</button>`).join('')}
+        ${question.choices.map((choice) => `<button onclick="checkIratAnswer('${question.answer}', '${choice}')">${choice}</button>`).join('')}
     `;
 }
 
