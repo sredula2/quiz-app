@@ -11,6 +11,7 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
+    console.log('Selected quiz name:', quizName); // Debug line
     // Validate credentials
     validateCredentials(quizName, username, password);
 });
